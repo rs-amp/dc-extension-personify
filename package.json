@@ -12,6 +12,7 @@
     "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-links": "^6.1.17",
     "@storybook/addons": "^6.1.17",
+    "@storybook/react": "^6.1.17",
     "clsx": "^1.0.4",
     "dc-extensions-sdk": "github:amplience/dc-extensions-sdk#release/2.0.0",
     "react": "^17.0.1",
