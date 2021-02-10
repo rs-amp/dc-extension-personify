@@ -1,16 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import { init, SDK } from "dc-extensions-sdk";
-import {
-  Editor,
-  EditorRegistry,
-  getDefaultRegistry,
-  getExtensionParams,
-  SdkContext,
-  withTheme,
-} from "unofficial-dynamic-content-ui";
-import ManagedCoverageReport from "./components/ManagedCoverageReport/ManagedCoverageReport";
-import ManagedCriteria from "./components/ManagedCriteria/ManagedCriteria";
+import { init, SDK } from 'dc-extensions-sdk';
+import { SdkContext, withTheme } from 'unofficial-dynamic-content-ui';
+import ManagedCoverageReport from './components/ManagedCoverageReport/ManagedCoverageReport';
+import ManagedCriteria from './components/ManagedCriteria/ManagedCriteria';
 
 interface AppState {
   connected: boolean;
@@ -64,8 +57,7 @@ export default class App extends React.Component<{}, AppState> {
             {this.state.sdk ? (
               <SdkContext.Provider value={{ sdk: this.state.sdk }}>
                 {withTheme(
-                  ((this.state.schema["ui:extension"] || {}).params || {})
-                    .type == "criteria" ? (
+                  ((this.state.schema['ui:extension'] || {}).params || {}).type === 'criteria' ? (
                     <ManagedCriteria />
                   ) : (
                     <ManagedCoverageReport />
