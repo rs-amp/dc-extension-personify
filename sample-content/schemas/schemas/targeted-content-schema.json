@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://targeted-content.json",
+  "$id": "https://personify.extensions.content.amplience.net/targeted-content.json",
 
   "title": "Targeted Content",
   "description": "",
@@ -43,7 +43,7 @@
                 {
                   "properties": {
                     "contentType": {
-                      "$ref": "https://hero-banner.json"
+                      "enum": ["https://hero-banner.json"]
                     }
                   }
                 }

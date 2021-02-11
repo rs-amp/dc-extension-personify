@@ -1,10 +1,11 @@
 {
-  "contentTypeUri": "https://targeted-content.json",
+  "contentTypeUri": "https://personify.extensions.content.amplience.net/targeted-content.json",
   "status": "ACTIVE",
   "settings": {
     "label": "Targeted Content",
     "icons": [],
     "visualizations": [],
-    "cards": []
+    "cards": [],
+    "repositories": ["content"]
   }
 }

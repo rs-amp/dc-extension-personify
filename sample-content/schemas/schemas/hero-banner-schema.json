@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://hero-banner.json",
+  "$id": "https://personify.extensions.content.amplience.net/hero-banner.json",
 
   "title": "Hero Banner Block",
   "description": "",

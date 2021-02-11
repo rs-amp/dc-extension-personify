@@ -1,5 +1,5 @@
 {
   "body": "./schemas/targeted-content-schema.json",
-  "schemaId": "https://targeted-content.json",
+  "schemaId": "https://personify.extensions.content.amplience.net/targeted-content.json",
   "validationLevel": "CONTENT_TYPE"
 }

@@ -1,5 +1,5 @@
 {
   "body": "./schemas/hero-banner-schema.json",
-  "schemaId": "https://hero-banner.json",
+  "schemaId": "https://personify.extensions.content.amplience.net/hero-banner.json",
   "validationLevel": "CONTENT_TYPE"
 }
