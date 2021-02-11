@@ -43,7 +43,9 @@
                 {
                   "properties": {
                     "contentType": {
-                      "enum": ["https://hero-banner.json"]
+                      "enum": [
+                        "https://personify.extensions.content.amplience.net/hero-banner.json"
+                      ]
                     }
                   }
                 }
