@@ -5,7 +5,9 @@ import TrendIcon from '../TrendIcon';
 
 const styles = (theme: Theme) => ({
   root: {
-    padding: 25,
+    paddingLeft: 10,
+    padingRight: 25,
+    paddingBottom: 10,
     borderRadius: '0px',
   },
   title: {},
@@ -28,16 +30,21 @@ const styles = (theme: Theme) => ({
     flexDirection: 'row' as 'row',
     alignItems: 'center',
   },
+  relevancy: {
+    lineHeight: 1.5,
+  },
   chips: {
     marginLeft: 10,
   },
   chip: {
     marginLeft: 10,
     marginBottom: 10,
+    backgroundColor: '#e5e5e5',
+    borderRadius: '8px',
   },
   icon: {
-    width: 32,
-    height: 32,
+    width: 24,
+    height: 24,
     fill: '#2DD000',
     marginRight: 20,
   },
@@ -70,7 +77,7 @@ const CoverageReport: React.SFC<Props> = (props) => {
   const percentage = (value * 100).toFixed(2);
 
   return (
-    <Paper elevation={1} className={classes.root}>
+    <Paper elevation={0} className={classes.root}>
       <Typography variant="h6" className={classes.title}>
         Content relevance
       </Typography>
@@ -78,12 +85,12 @@ const CoverageReport: React.SFC<Props> = (props) => {
         <Typography variant="h4" className={classes.percentage}>
           {percentage}%
         </Typography>
-        <Typography variant="subtitle1">
+        <Typography variant="subtitle1" className={classes.relevancy}>
           The currently targeted content will be relevant to {percentage}% of your visitors
         </Typography>
         <div className={classes.chips}>
           {uniqueTags.map((tag) => {
-            return <Chip disabled className={classes.chip} label={tag} />;
+            return <Chip clickable={false} className={classes.chip} label={tag} key={tag} size="small" />;
           })}
         </div>
       </div>

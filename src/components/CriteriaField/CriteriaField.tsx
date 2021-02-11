@@ -15,7 +15,7 @@ const styles = (theme: Theme) => ({
   },
   info: {
     marginTop: 10,
-    background: '#F2F1F2',
+    background: '#F7F7F7',
     padding: 10,
 
     display: 'flex',
@@ -28,10 +28,10 @@ const styles = (theme: Theme) => ({
     maxWidth: 300,
   },
   icon: {
-    width: 32,
-    height: 32,
+    width: 24,
+    height: 24,
     fill: '#CCCCCC',
-    marginRight: 20,
+    marginRight: 10,
   },
   progress: {
     width: '100%',
