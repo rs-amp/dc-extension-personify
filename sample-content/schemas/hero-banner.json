@@ -1,0 +1,5 @@
+{
+  "body": "./schemas/hero-banner-schema.json",
+  "schemaId": "https://hero-banner.json",
+  "validationLevel": "CONTENT_TYPE"
+}

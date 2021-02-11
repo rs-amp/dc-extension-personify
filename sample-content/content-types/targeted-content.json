@@ -1,0 +1,10 @@
+{
+  "contentTypeUri": "https://targeted-content.json",
+  "status": "ACTIVE",
+  "settings": {
+    "label": "Targeted Content",
+    "icons": [],
+    "visualizations": [],
+    "cards": []
+  }
+}

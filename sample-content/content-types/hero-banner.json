@@ -1,0 +1,10 @@
+{
+  "contentTypeUri": "https://hero-banner.json",
+  "status": "ACTIVE",
+  "settings": {
+    "label": "Hero Banner",
+    "icons": [],
+    "visualizations": [],
+    "cards": []
+  }
+}

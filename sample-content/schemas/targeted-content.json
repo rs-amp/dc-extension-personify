@@ -1,0 +1,5 @@
+{
+  "body": "./schemas/targeted-content-schema.json",
+  "schemaId": "https://targeted-content.json",
+  "validationLevel": "CONTENT_TYPE"
+}
