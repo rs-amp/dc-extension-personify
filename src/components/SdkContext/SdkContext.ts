@@ -10,6 +10,8 @@ interface Parameters {
   };
 }
 
+export type Sdk = ContentFieldExtension<any, Parameters>;
+
 export interface SdkContextProps {
   sdk?: ContentFieldExtension<any, Parameters>;
 }

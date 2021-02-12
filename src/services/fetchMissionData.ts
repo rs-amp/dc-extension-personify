@@ -1,6 +1,12 @@
 import { stripTrailingSlash } from '../utils/stripTrailingSlash';
 
-export async function fetchMissionData(apiUrl: string, missions: string[] = [], tags: string[] = []) {
+interface MissionDataParams {
+  apiUrl: string;
+  missions: string[];
+  tags: string[];
+}
+
+export async function fetchMissionData({ apiUrl, missions = [], tags = [] }: MissionDataParams) {
   return fetch(`${stripTrailingSlash(apiUrl)}/personalization/personify/missiondata`, {
     method: 'POST',
     headers: {

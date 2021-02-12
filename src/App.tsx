@@ -4,17 +4,10 @@ import { init, ContentFieldExtension } from 'dc-extensions-sdk';
 import ManagedCoverageReport from './components/ManagedCoverageReport/ManagedCoverageReport';
 import ManagedCriteria from './components/ManagedCriteria/ManagedCriteria';
 import { WithTheme, SdkContext } from './components';
-interface Parameters {
-  instance: {
-    type: string | undefined;
-  };
-  installation: {
-    apiUrl: string;
-  };
-}
-interface AppState {
+import { Sdk, SdkContextProps } from './components/SdkContext/SdkContext';
+
+interface AppState extends SdkContextProps {
   connected: boolean;
-  sdk?: ContentFieldExtension<any, Parameters>;
   value?: any;
   schema?: any;
   openDialog?: string;
@@ -33,7 +26,7 @@ export default class App extends React.Component<{}, AppState> {
   }
 
   public async handleConnect(): Promise<void> {
-    const sdk = await init<ContentFieldExtension<any, Parameters>>();
+    const sdk = await init<Sdk>();
     sdk.frame.startAutoResizer();
 
     const value = await sdk.field.getValue();
@@ -70,7 +63,7 @@ export default class App extends React.Component<{}, AppState> {
             ) : null}
           </div>
         ) : (
-          <div>&nbsp;</div>
+          <div></div>
         )}
       </div>
     );

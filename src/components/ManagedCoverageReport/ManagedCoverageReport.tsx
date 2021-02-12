@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { withStyles, WithStyles, Theme } from '@material-ui/core';
 import CoverageReport from '../CoverageReport/CoverageReport';
-import { SdkContext } from 'unofficial-dynamic-content-ui';
 import useInterval from 'react-useinterval';
 import { withRetry } from '../../utils/withRetry';
 import { fetchMissionData } from '../../services/fetchMissionData';
+import SdkContext from '../SdkContext';
 
 const styles = (theme: Theme) => ({});
 
@@ -59,7 +59,7 @@ const ManagedCoverageReport = (props: Props) => {
   };
 
   const fetchCoverageReport = async () => {
-    const apiUrl = await sdk.params?.installation?.apiUrl;
+    const apiUrl = await sdk?.params.installation?.apiUrl;
     if (!apiUrl) {
       return;
     }
