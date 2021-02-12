@@ -59,7 +59,7 @@ interface Props extends WithStyles<typeof styles> {
   };
 }
 
-const CoverageReport: React.SFC<Props> = (props) => {
+const CoverageReport = (props: Props) => {
   const { classes, value = 0, loading = false, tags, missions, suggestedTarget } = props;
 
   const uniqueTags = useMemo(() => {

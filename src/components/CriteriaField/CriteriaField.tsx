@@ -54,7 +54,7 @@ interface Props extends WithStyles<typeof styles> {
   infoLoading?: boolean;
 }
 
-const CriteriaField: React.SFC<Props> = (props) => {
+const CriteriaField: React.FC<Props> = (props) => {
   const { className, classes, label, description, options, selected, infoMessage, infoLoading, onChange } = props;
 
   return (

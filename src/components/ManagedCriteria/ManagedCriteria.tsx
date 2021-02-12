@@ -18,7 +18,7 @@ interface Props extends WithStyles<typeof styles> {
   style?: React.CSSProperties;
 }
 
-const ManagedCriteria: React.SFC<Props> = (props) => {
+const ManagedCriteria = (props: Props) => {
   const { classes } = props;
 
   const { sdk } = useContext(SdkContext);

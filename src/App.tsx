@@ -1,13 +1,20 @@
 import React from 'react';
 
-import { init, ContentFieldExtension, Params } from 'dc-extensions-sdk';
-import { SdkContext, withTheme } from 'unofficial-dynamic-content-ui';
+import { init, ContentFieldExtension } from 'dc-extensions-sdk';
 import ManagedCoverageReport from './components/ManagedCoverageReport/ManagedCoverageReport';
 import ManagedCriteria from './components/ManagedCriteria/ManagedCriteria';
-
+import { WithTheme, SdkContext } from './components';
+interface Parameters {
+  instance: {
+    type: string | undefined;
+  };
+  installation: {
+    apiUrl: string;
+  };
+}
 interface AppState {
   connected: boolean;
-  sdk?: ContentFieldExtension;
+  sdk?: ContentFieldExtension<any, Parameters>;
   value?: any;
   schema?: any;
   openDialog?: string;
@@ -26,7 +33,7 @@ export default class App extends React.Component<{}, AppState> {
   }
 
   public async handleConnect(): Promise<void> {
-    const sdk = await init<ContentFieldExtension<any, Params>>();
+    const sdk = await init<ContentFieldExtension<any, Parameters>>();
     sdk.frame.startAutoResizer();
 
     const value = await sdk.field.getValue();
@@ -55,14 +62,10 @@ export default class App extends React.Component<{}, AppState> {
         {this.state.connected === true ? (
           <div>
             {this.state.sdk ? (
-              <SdkContext.Provider value={{ sdk: this.state.sdk as any }}>
-                {withTheme(
-                  ((this.state.schema['ui:extension'] || {}).params || {}).type === 'criteria' ? (
-                    <ManagedCriteria />
-                  ) : (
-                    <ManagedCoverageReport />
-                  )
-                )}
+              <SdkContext.Provider value={{ sdk: this.state.sdk }}>
+                <WithTheme>
+                  {this.state.sdk.params.instance.type === 'criteria' ? <ManagedCriteria /> : <ManagedCoverageReport />}
+                </WithTheme>
               </SdkContext.Provider>
             ) : null}
           </div>

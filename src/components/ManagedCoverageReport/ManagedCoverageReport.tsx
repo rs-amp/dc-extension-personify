@@ -13,7 +13,7 @@ interface Props extends WithStyles<typeof styles> {
   style?: React.CSSProperties;
 }
 
-const ManagedCoverageReport: React.SFC<Props> = (props) => {
+const ManagedCoverageReport = (props: Props) => {
   const { sdk } = useContext(SdkContext);
 
   const [criteria, setCriteria] = useState<{
@@ -59,14 +59,13 @@ const ManagedCoverageReport: React.SFC<Props> = (props) => {
   };
 
   const fetchCoverageReport = async () => {
-    // if (criteria.missions.length === 0 && criteria.tags.length === 0) {
-    //     setIsLoading(false);
-    //     return;
-    // }
+    const apiUrl = await sdk.params?.installation?.apiUrl;
+    if (!apiUrl) {
+      return;
+    }
 
     setIsLoading(true);
-
-    const data = await withRetry(() => fetchMissionData(criteria.missions, criteria.tags), 'personify');
+    const data = await withRetry(() => fetchMissionData({ apiUrl, ...criteria }), 'personify');
 
     const { coverage, suggested_target, missions } = data;
 

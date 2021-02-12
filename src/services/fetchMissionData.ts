@@ -1,5 +1,7 @@
-export async function fetchMissionData(missions: string[] = [], tags: string[] = []) {
-  return fetch('https://fqpx7qvccb.execute-api.eu-west-1.amazonaws.com/dev/personalization/personify/missiondata', {
+import { stripTrailingSlash } from '../utils/stripTrailingSlash';
+
+export async function fetchMissionData(apiUrl: string, missions: string[] = [], tags: string[] = []) {
+  return fetch(`${stripTrailingSlash(apiUrl)}/personalization/personify/missiondata`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
