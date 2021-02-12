@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles, WithStyles, Theme } from '@material-ui/core';
 import CoverageReport from '../CoverageReport/CoverageReport';
 import useInterval from 'react-useinterval';
 import { withRetry } from '../../utils/withRetry';
 import { fetchMissionData } from '../../services/fetchMissionData';
-import SdkContext from '../SdkContext';
+import { useSdkContext } from '../SdkContext';
 
 const styles = (theme: Theme) => ({});
 
@@ -14,7 +14,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const ManagedCoverageReport = (props: Props) => {
-  const { sdk } = useContext(SdkContext);
+  const sdk = useSdkContext();
 
   const [criteria, setCriteria] = useState<{
     missions: string[];
@@ -59,13 +59,10 @@ const ManagedCoverageReport = (props: Props) => {
   };
 
   const fetchCoverageReport = async () => {
-    const apiUrl = await sdk?.params.installation?.apiUrl;
-    if (!apiUrl) {
-      return;
-    }
+    const apiUrl = sdk?.params.installation.apiUrl;
 
     setIsLoading(true);
-    const data = await withRetry(() => fetchMissionData({ apiUrl, ...criteria }), 'personify');
+    const data = await withRetry(() => fetchMissionData(apiUrl, criteria.missions, criteria.tags), 'personify');
 
     const { coverage, suggested_target, missions } = data;
 

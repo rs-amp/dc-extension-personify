@@ -1,12 +1,9 @@
 import { stripTrailingSlash } from '../utils/stripTrailingSlash';
 
-interface MissionDataParams {
-  apiUrl: string;
-  missions: string[];
-  tags: string[];
-}
-
-export async function fetchMissionData({ apiUrl, missions = [], tags = [] }: MissionDataParams) {
+export async function fetchMissionData(apiUrl: string | undefined, missions: string[] = [], tags: string[] = []) {
+  if (!apiUrl) {
+    throw new Error('Personify API required to be set in `apiUrl` installation parameter');
+  }
   return fetch(`${stripTrailingSlash(apiUrl)}/personalization/personify/missiondata`, {
     method: 'POST',
     headers: {

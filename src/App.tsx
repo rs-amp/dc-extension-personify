@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { init, ContentFieldExtension } from 'dc-extensions-sdk';
-import ManagedCoverageReport from './components/ManagedCoverageReport/ManagedCoverageReport';
-import ManagedCriteria from './components/ManagedCriteria/ManagedCriteria';
-import { WithTheme, SdkContext } from './components';
-import { Sdk, SdkContextProps } from './components/SdkContext/SdkContext';
+import { init } from 'dc-extensions-sdk';
+import { WithTheme, ManagedCoverageReport, ManagedCriteria } from './components';
+import SdkContext, { Sdk } from './components/SdkContext';
 
-interface AppState extends SdkContextProps {
+interface AppState {
   connected: boolean;
+  sdk?: Sdk;
   value?: any;
   schema?: any;
   openDialog?: string;
@@ -55,11 +54,11 @@ export default class App extends React.Component<{}, AppState> {
         {this.state.connected === true ? (
           <div>
             {this.state.sdk ? (
-              <SdkContext.Provider value={{ sdk: this.state.sdk }}>
+              <SdkContext sdk={this.state.sdk}>
                 <WithTheme>
                   {this.state.sdk.params.instance.type === 'criteria' ? <ManagedCriteria /> : <ManagedCoverageReport />}
                 </WithTheme>
-              </SdkContext.Provider>
+              </SdkContext>
             ) : null}
           </div>
         ) : (
