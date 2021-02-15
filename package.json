@@ -14,7 +14,7 @@
     "@storybook/addons": "^6.1.17",
     "@storybook/react": "^6.1.17",
     "clsx": "^1.0.4",
-    "dc-extensions-sdk": "github:amplience/dc-extensions-sdk#release/2.0.0",
+    "dc-extensions-sdk": "^2.0.0",
     "react": "^17.0.1",
     "react-dom": "^16.9.0",
     "react-useinterval": "^1.0.2"
