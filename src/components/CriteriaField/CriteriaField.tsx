@@ -15,7 +15,6 @@ const styles = (theme: Theme) => ({
   },
   info: {
     marginTop: 10,
-    background: '#F7F7F7',
     padding: 10,
 
     display: 'flex',
