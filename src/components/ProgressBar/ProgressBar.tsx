@@ -37,12 +37,11 @@ const styles = (theme: Theme) => ({
 interface Props extends WithStyles<typeof styles> {
   className?: string;
   style?: React.CSSProperties;
-
   value?: number;
   loading?: boolean;
 }
 
-const ProgressBar: React.SFC<Props> = (props) => {
+const ProgressBar = (props: Props) => {
   const { classes, value = 0, loading = false } = props;
 
   const progressTheme = useMemo(() => {

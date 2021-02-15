@@ -36,7 +36,7 @@ interface Props extends WithStyles<typeof styles> {
   onChange?: (selected: string[]) => void;
 }
 
-const ChipSelector: React.SFC<Props> = (props) => {
+const ChipSelector = (props: Props) => {
   const { classes, className, options, selected, onChange } = props;
 
   const [isOpen, setIsOpen] = useState(false);

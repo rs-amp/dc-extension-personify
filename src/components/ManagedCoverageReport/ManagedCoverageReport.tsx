@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles, WithStyles, Theme } from '@material-ui/core';
 import CoverageReport from '../CoverageReport/CoverageReport';
-import { SdkContext } from 'unofficial-dynamic-content-ui';
 import useInterval from 'react-useinterval';
 import { withRetry } from '../../utils/withRetry';
 import { fetchMissionData } from '../../services/fetchMissionData';
+import { useSdkContext } from '../SdkContext';
 
 const styles = (theme: Theme) => ({});
 
@@ -13,8 +13,8 @@ interface Props extends WithStyles<typeof styles> {
   style?: React.CSSProperties;
 }
 
-const ManagedCoverageReport: React.SFC<Props> = (props) => {
-  const { sdk } = useContext(SdkContext);
+const ManagedCoverageReport = (props: Props) => {
+  const sdk = useSdkContext();
 
   const [criteria, setCriteria] = useState<{
     missions: string[];
@@ -59,14 +59,10 @@ const ManagedCoverageReport: React.SFC<Props> = (props) => {
   };
 
   const fetchCoverageReport = async () => {
-    // if (criteria.missions.length === 0 && criteria.tags.length === 0) {
-    //     setIsLoading(false);
-    //     return;
-    // }
+    const apiUrl = sdk?.params.installation.apiUrl;
 
     setIsLoading(true);
-
-    const data = await withRetry(() => fetchMissionData(criteria.missions, criteria.tags), 'personify');
+    const data = await withRetry(() => fetchMissionData(apiUrl, criteria.missions, criteria.tags), 'personify');
 
     const { coverage, suggested_target, missions } = data;
 
