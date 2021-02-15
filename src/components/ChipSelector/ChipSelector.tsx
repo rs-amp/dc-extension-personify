@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withStyles, WithStyles, Theme, Select, Input, Chip, MenuItem } from '@material-ui/core';
+import DoneIcon from '@material-ui/icons/Done';
 import clsx from 'clsx';
 
 const styles = (theme: Theme) => ({
@@ -12,6 +13,16 @@ const styles = (theme: Theme) => ({
   },
   chip: {
     margin: 2,
+    backgroundColor: '#e5e5e5',
+    borderRadius: '8px',
+  },
+  doneIcon: {
+    width: 16,
+    height: 16,
+    marginRight: 10,
+  },
+  unSelected: {
+    paddingLeft: 40,
   },
 });
 
@@ -45,6 +56,8 @@ const ChipSelector = (props: Props) => {
     setIsOpen(false);
   };
 
+  const isSelected = (option: string) => selected.includes(option);
+
   return (
     <Select
       className={clsx(classes.root, className)}
@@ -58,10 +71,10 @@ const ChipSelector = (props: Props) => {
       renderValue={(selected) => (
         <div className={classes.chips}>
           {(selected as string[]).map((value: string) => (
-            <Chip disabled={true} key={value} label={value} className={classes.chip} />
+            <Chip key={value} label={value} className={classes.chip} size="small" clickable={false} />
           ))}
           {(selected as string[]).length === 0 ? (
-            <Chip disabled={true} label={'None'} className={classes.chip} />
+            <Chip disabled={true} label={'None'} className={classes.chip} size="small" />
           ) : null}
         </div>
       )}
@@ -74,7 +87,8 @@ const ChipSelector = (props: Props) => {
       }}
     >
       {options.map((option) => (
-        <MenuItem key={option} value={option}>
+        <MenuItem key={option} value={option} className={!isSelected(option) ? classes.unSelected : ''}>
+          {isSelected(option) ? <DoneIcon className={classes.doneIcon} /> : null}
           {option}
         </MenuItem>
       ))}

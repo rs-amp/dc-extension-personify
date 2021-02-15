@@ -4,13 +4,13 @@ import clsx from 'clsx';
 
 const styles = (theme: Theme) => ({
   root: {
-    height: 32,
+    height: 24,
     width: '100%',
     background: '#E5E5E5',
     position: 'relative' as 'relative',
   },
   bar: {
-    height: 32,
+    height: 24,
     transition: 'width 1s',
   },
   low: {
