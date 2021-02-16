@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 import ManagedCoverageReport from './ManagedCoverageReport';
 
-import { SdkContext } from 'unofficial-dynamic-content-ui';
+import { SdkContext } from '../../components';
 
 const content1 = {
   _meta: {
@@ -205,8 +205,8 @@ storiesOf('ManagedCoverageReport', module).add('Initial State', () => {
   } as any;
 
   return (
-    <SdkContext.Provider value={{ sdk }}>
+    <SdkContext sdk={sdk}>
       <ManagedCoverageReport />
-    </SdkContext.Provider>
+    </SdkContext>
   );
 });

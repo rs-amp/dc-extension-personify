@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { SdkContext } from 'unofficial-dynamic-content-ui';
+import { SdkContext } from '../../components';
 import ManagedCriteria from './ManagedCriteria';
 
 storiesOf('ManagedCriteria', module).add('Initial State', () => {
@@ -18,8 +18,8 @@ storiesOf('ManagedCriteria', module).add('Initial State', () => {
   } as any;
 
   return (
-    <SdkContext.Provider value={{ sdk }}>
+    <SdkContext sdk={sdk}>
       <ManagedCriteria />
-    </SdkContext.Provider>
+    </SdkContext>
   );
 });
