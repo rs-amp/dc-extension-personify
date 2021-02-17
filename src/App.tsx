@@ -51,7 +51,7 @@ export default class App extends React.Component<{}, AppState> {
   public render(): React.ReactElement {
     return (
       <div className="App">
-        {this.state.connected === true ? (
+        {this.state.connected === true && (
           <div>
             {this.state.sdk ? (
               <SdkContext sdk={this.state.sdk}>
@@ -61,8 +61,6 @@ export default class App extends React.Component<{}, AppState> {
               </SdkContext>
             ) : null}
           </div>
-        ) : (
-          <div></div>
         )}
       </div>
     );

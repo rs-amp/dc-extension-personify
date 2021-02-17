@@ -4,7 +4,7 @@ export async function fetchMissionData(apiUrl: string | undefined, missions: str
   if (!apiUrl) {
     throw new Error('Personify API required to be set in `apiUrl` installation parameter');
   }
-  return fetch(`${stripTrailingSlash(apiUrl)}/personalization/personify/missiondata`, {
+  return fetch(`${stripTrailingSlash(apiUrl)}/missiondata`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

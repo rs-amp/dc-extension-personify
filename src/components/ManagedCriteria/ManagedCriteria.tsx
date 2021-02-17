@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { withStyles, WithStyles, Theme } from '@material-ui/core';
 import CriteriaField from '../CriteriaField/CriteriaField';
 import { useSdkContext } from '../SdkContext';
-import { withRetry } from '../../utils/withRetry';
 import { fetchMissionData } from '../../services/fetchMissionData';
 
 const styles = (theme: Theme) => ({
@@ -35,7 +34,7 @@ const ManagedCriteria = (props: Props) => {
   const apiUrl = sdk?.params.installation.apiUrl;
 
   const fetchOptions = async () => {
-    const missionData = await withRetry(() => fetchMissionData(apiUrl, [], []), 'personify');
+    const missionData = await fetchMissionData(apiUrl, [], []);
     setAllBehaviours(missionData.missions.map((x: any) => x.mission_name));
     setAllTags(missionData.tags);
   };
@@ -43,7 +42,7 @@ const ManagedCriteria = (props: Props) => {
   const fetchBehavioursCoverage = async () => {
     let input = behaviours;
     setBehaviorsIsLoading(true);
-    const data = await withRetry(() => fetchMissionData(apiUrl, input, []), 'personify');
+    const data = await fetchMissionData(apiUrl, input, []);
     if (input === behaviours) {
       setBehaviorsInfoMessage(
         `Selected behaviours target ${(data.coverage * 100).toFixed(2)}% of average website traffic`
@@ -55,7 +54,7 @@ const ManagedCriteria = (props: Props) => {
   const fetchTagsCoverage = async () => {
     let input = tags;
     setTagsIsLoading(true);
-    const data = await withRetry(() => fetchMissionData(apiUrl, [], input), 'personify');
+    const data = await fetchMissionData(apiUrl, [], input);
     if (input === tags) {
       setTagsInfoMessage(`Selected tags target ${(data.coverage * 100).toFixed(2)}% of average website traffic`);
       setTagsIsLoading(false);

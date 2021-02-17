@@ -1,7 +1,9 @@
-import React, { useMemo } from 'react';
-import { withStyles, WithStyles, Theme, Paper, Typography, Chip } from '@material-ui/core';
-import ProgressBar from '../ProgressBar/ProgressBar';
-import TrendIcon from '../TrendIcon';
+import React from 'react';
+import { withStyles, WithStyles, Theme, Paper, Typography } from '@material-ui/core';
+import { ProgressBar, ErrorMessage } from '../../components';
+import If from '../If';
+import CoverageReportRecommendations from './CoverageReportRecommendations';
+import CoverageReportSummary from './CoverageReportSummary';
 
 const styles = (theme: Theme) => ({
   root: {
@@ -11,42 +13,9 @@ const styles = (theme: Theme) => ({
     borderRadius: '0px',
   },
   title: {},
-  summary: {
-    marginTop: 10,
-    display: 'flex',
-    flexDirection: 'row' as 'row',
-    alignItems: 'center',
-  },
-  percentage: {
-    marginRight: 20,
-  },
   progressBar: {
     marginTop: 10,
     width: '100%',
-  },
-  reccomendations: {
-    marginTop: 10,
-    display: 'flex',
-    flexDirection: 'row' as 'row',
-    alignItems: 'center',
-  },
-  relevancy: {
-    lineHeight: 1.5,
-  },
-  chips: {
-    marginLeft: 10,
-  },
-  chip: {
-    marginLeft: 10,
-    marginBottom: 10,
-    backgroundColor: '#e5e5e5',
-    borderRadius: '8px',
-  },
-  icon: {
-    width: 24,
-    height: 24,
-    fill: '#2DD000',
-    marginRight: 20,
   },
 });
 
@@ -56,6 +25,7 @@ interface Props extends WithStyles<typeof styles> {
 
   value?: number;
   loading?: boolean;
+  error?: Error;
   missions?: string[];
   tags?: string[];
 
@@ -67,47 +37,28 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const CoverageReport = (props: Props) => {
-  const { classes, value = 0, loading = false, tags, missions, suggestedTarget } = props;
-
-  const uniqueTags = useMemo(() => {
-    const set = new Set([...(tags || []), ...(missions || [])]);
-    return Array.from(set);
-  }, [tags, missions]);
-
-  const percentage = (value * 100).toFixed(2);
+  const { classes, value = 0, loading = false, error, tags, missions, suggestedTarget } = props;
 
   return (
     <Paper elevation={0} className={classes.root}>
       <Typography variant="h6" className={classes.title}>
         Content relevance
       </Typography>
-      <div className={classes.summary}>
-        <Typography variant="h4" className={classes.percentage}>
-          {percentage}%
-        </Typography>
-        <Typography variant="subtitle1" className={classes.relevancy}>
-          The currently targeted content will be relevant to {percentage}% of your visitors
-        </Typography>
-        <div className={classes.chips}>
-          {uniqueTags.map((tag) => {
-            return <Chip clickable={false} className={classes.chip} label={tag} key={tag} size="small" />;
-          })}
+
+      <If condition={!error && !loading}>
+        <CoverageReportSummary tags={tags} missions={missions} />
+        <CoverageReportRecommendations suggestedTarget={suggestedTarget} />
+      </If>
+      <If condition={!error}>
+        <div className={classes.progressBar}>
+          <ProgressBar loading={loading} value={value} />
         </div>
-      </div>
-      <div className={classes.progressBar}>
-        <ProgressBar loading={loading} value={value} />
-      </div>
-      <div className={classes.reccomendations}>
-        {suggestedTarget ? (
-          <>
-            <TrendIcon className={classes.icon} />
-            <Typography variant="subtitle1">
-              Increase relevance to {(suggestedTarget.coverage * 100).toFixed(2)}% by targeting{' '}
-              {suggestedTarget.type === 'TAG' ? 'tag' : 'behaviour'} "{suggestedTarget.target}"
-            </Typography>
-          </>
-        ) : null}
-      </div>
+      </If>
+      <If condition={error}>
+        <ErrorMessage>
+          Sorry we are unable to calculate relevancy scores due to a problem retrieving the necessary data.
+        </ErrorMessage>
+      </If>
     </Paper>
   );
 };

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { withStyles, WithStyles, Theme } from '@material-ui/core';
 import CoverageReport from '../CoverageReport/CoverageReport';
 import useInterval from 'react-useinterval';
-import { withRetry } from '../../utils/withRetry';
 import { fetchMissionData } from '../../services/fetchMissionData';
 import { useSdkContext } from '../SdkContext';
 
@@ -23,7 +22,7 @@ const ManagedCoverageReport = (props: Props) => {
     missions: [],
     tags: [],
   });
-
+  const [error, setError] = useState();
   const [value, setValue] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [suggestedTarget, setSuggestedTarget] = useState<any>(null);
@@ -54,44 +53,46 @@ const ManagedCoverageReport = (props: Props) => {
         });
       }
     } catch (err) {
-      console.log(err);
+      setError(err);
     }
   };
 
   const fetchCoverageReport = async () => {
-    const apiUrl = sdk?.params.installation.apiUrl;
+    try {
+      setIsLoading(true);
+      const data = await fetchMissionData(sdk?.params.installation.apiUrl, criteria.missions, criteria.tags);
 
-    setIsLoading(true);
-    const data = await withRetry(() => fetchMissionData(apiUrl, criteria.missions, criteria.tags), 'personify');
+      const { coverage, suggested_target, missions } = data;
 
-    const { coverage, suggested_target, missions } = data;
+      if (coverage) {
+        setValue(coverage);
+      }
 
-    if (coverage) {
-      setValue(coverage);
-    }
-
-    if (suggested_target && suggested_target.target !== undefined) {
-      if (suggested_target.type === 'TAG') {
-        setSuggestedTarget({
-          target: suggested_target.target,
-          type: 'TAG',
-          coverage: suggested_target.possible_coverage,
-        });
-      } else {
-        const mission = missions.find((x: any) => x.mission_id === suggested_target.target);
-        if (mission) {
+      if (suggested_target && suggested_target.target !== undefined) {
+        if (suggested_target.type === 'TAG') {
           setSuggestedTarget({
-            target: mission.mission_name,
-            type: 'MISSION',
+            target: suggested_target.target,
+            type: 'TAG',
             coverage: suggested_target.possible_coverage,
           });
         } else {
-          setSuggestedTarget(null);
+          const mission = missions.find((x: any) => x.mission_id === suggested_target.target);
+          if (mission) {
+            setSuggestedTarget({
+              target: mission.mission_name,
+              type: 'MISSION',
+              coverage: suggested_target.possible_coverage,
+            });
+          } else {
+            setSuggestedTarget(null);
+          }
         }
       }
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -108,6 +109,7 @@ const ManagedCoverageReport = (props: Props) => {
     <CoverageReport
       value={value}
       loading={isLoading}
+      error={error}
       missions={criteria.missions}
       tags={criteria.tags}
       suggestedTarget={suggestedTarget}
