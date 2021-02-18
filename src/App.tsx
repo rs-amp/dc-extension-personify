@@ -1,21 +1,13 @@
-import React from "react";
+import React from 'react';
 
-import { init, SDK } from "dc-extensions-sdk";
-import {
-  Editor,
-  EditorRegistry,
-  getDefaultRegistry,
-  getExtensionParams,
-  SdkContext,
-  withTheme,
-} from "unofficial-dynamic-content-ui";
-import ManagedCoverageReport from "./components/ManagedCoverageReport/ManagedCoverageReport";
-import ManagedCriteria from "./components/ManagedCriteria/ManagedCriteria";
+import { init } from 'dc-extensions-sdk';
+import { WithTheme, ManagedCoverageReport, ManagedCriteria } from './components';
+import SdkContext, { Sdk } from './components/SdkContext';
 
 interface AppState {
   connected: boolean;
-  sdk?: SDK;
-  value?: string;
+  sdk?: Sdk;
+  value?: any;
   schema?: any;
   openDialog?: string;
   openDialogCallback?: (value: any) => void;
@@ -33,10 +25,10 @@ export default class App extends React.Component<{}, AppState> {
   }
 
   public async handleConnect(): Promise<void> {
-    const sdk: SDK = await init();
+    const sdk = await init<Sdk>();
     sdk.frame.startAutoResizer();
 
-    const value: string = await sdk.field.getValue();
+    const value = await sdk.field.getValue();
     this.setState({
       sdk,
       connected: true,
@@ -62,20 +54,15 @@ export default class App extends React.Component<{}, AppState> {
         {this.state.connected === true ? (
           <div>
             {this.state.sdk ? (
-              <SdkContext.Provider value={{ sdk: this.state.sdk }}>
-                {withTheme(
-                  ((this.state.schema["ui:extension"] || {}).params || {})
-                    .type == "criteria" ? (
-                    <ManagedCriteria />
-                  ) : (
-                    <ManagedCoverageReport />
-                  )
-                )}
-              </SdkContext.Provider>
+              <SdkContext sdk={this.state.sdk}>
+                <WithTheme>
+                  {this.state.sdk.params.instance.type === 'criteria' ? <ManagedCriteria /> : <ManagedCoverageReport />}
+                </WithTheme>
+              </SdkContext>
             ) : null}
           </div>
         ) : (
-          <div>&nbsp;</div>
+          <div></div>
         )}
       </div>
     );
