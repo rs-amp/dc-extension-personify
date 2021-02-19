@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles, WithStyles, Theme, Paper, Typography } from '@material-ui/core';
-import { ProgressBar, ErrorMessage } from '../../components';
+import { ProgressBar, MessageError } from '../../components';
 import If from '../If';
 import CoverageReportRecommendations from './CoverageReportRecommendations';
 import CoverageReportSummary from './CoverageReportSummary';
@@ -12,10 +12,16 @@ const styles = (theme: Theme) => ({
     paddingBottom: 10,
     borderRadius: '0px',
   },
-  title: {},
+  title: {
+    marginBottom: 10,
+  },
   progressBar: {
     marginTop: 10,
     width: '100%',
+  },
+  errorMessageIcon: {
+    height: '35px',
+    width: '35px',
   },
 });
 
@@ -44,7 +50,6 @@ const CoverageReport = (props: Props) => {
       <Typography variant="h6" className={classes.title}>
         Content relevance
       </Typography>
-
       <If condition={!error && !loading}>
         <CoverageReportSummary tags={tags} missions={missions} />
         <CoverageReportRecommendations suggestedTarget={suggestedTarget} />
@@ -55,9 +60,7 @@ const CoverageReport = (props: Props) => {
         </div>
       </If>
       <If condition={error}>
-        <ErrorMessage>
-          Sorry we are unable to calculate relevancy scores due to a problem retrieving the necessary data.
-        </ErrorMessage>
+        <MessageError text={error?.message} classes={{ icon: classes.errorMessageIcon }} />
       </If>
     </Paper>
   );

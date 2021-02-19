@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles, WithStyles, Theme, Typography } from '@material-ui/core';
 import TrendIcon from '../TrendIcon';
+import { toPercentage } from '../../utils/toPercentage';
 
 const styles = (theme: Theme) => ({
   root: {
@@ -32,7 +33,7 @@ const CoverageReportRecommendations = (props: Props) => {
   const { classes, suggestedTarget } = props;
 
   if (suggestedTarget) {
-    const coverage = (suggestedTarget.coverage * 100).toFixed(2);
+    const coverage = toPercentage(suggestedTarget.coverage);
     const type = suggestedTarget.type === 'TAG' ? 'tag' : 'behaviour';
     const target = suggestedTarget?.target;
 

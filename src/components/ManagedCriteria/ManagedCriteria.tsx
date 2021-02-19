@@ -3,6 +3,8 @@ import { withStyles, WithStyles, Theme } from '@material-ui/core';
 import CriteriaField from '../CriteriaField/CriteriaField';
 import { useSdkContext } from '../SdkContext';
 import { fetchMissionData } from '../../services/fetchMissionData';
+import { withRetry } from '../../utils/withRetry';
+import { toPercentage } from '../../utils/toPercentage';
 
 const styles = (theme: Theme) => ({
   root: {},
@@ -31,22 +33,27 @@ const ManagedCriteria = (props: Props) => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagsIsLoading, setTagsIsLoading] = useState(false);
   const [tagsInfoMessage, setTagsInfoMessage] = useState('');
+  const [error, setError] = useState<Error>();
   const apiUrl = sdk?.params.installation.apiUrl;
 
   const fetchOptions = async () => {
-    const missionData = await fetchMissionData(apiUrl, [], []);
-    setAllBehaviours(missionData.missions.map((x: any) => x.mission_name));
-    setAllTags(missionData.tags);
+    try {
+      const missionData = await withRetry(() => fetchMissionData(apiUrl, [], []), 'personify');
+      setAllBehaviours(missionData.missions.map((mission: any) => mission.mission_name));
+      setAllTags(missionData.tags);
+    } catch (err) {
+      console.log('Unable to retrieve data', err);
+      err.message = 'We are unable to retrieve data.';
+      setError(err);
+    }
   };
 
   const fetchBehavioursCoverage = async () => {
     let input = behaviours;
     setBehaviorsIsLoading(true);
-    const data = await fetchMissionData(apiUrl, input, []);
+    const data = await withRetry(() => fetchMissionData(apiUrl, input, []), 'personify');
     if (input === behaviours) {
-      setBehaviorsInfoMessage(
-        `Selected behaviours target ${(data.coverage * 100).toFixed(2)}% of average website traffic`
-      );
+      setBehaviorsInfoMessage(`Selected behaviours target ${toPercentage(data.coverage)}% of average website traffic`);
       setBehaviorsIsLoading(false);
     }
   };
@@ -54,9 +61,9 @@ const ManagedCriteria = (props: Props) => {
   const fetchTagsCoverage = async () => {
     let input = tags;
     setTagsIsLoading(true);
-    const data = await fetchMissionData(apiUrl, [], input);
+    const data = await withRetry(() => fetchMissionData(apiUrl, [], input), 'personify');
     if (input === tags) {
-      setTagsInfoMessage(`Selected tags target ${(data.coverage * 100).toFixed(2)}% of average website traffic`);
+      setTagsInfoMessage(`Selected tags target ${toPercentage(data.coverage)}% of average website traffic`);
       setTagsIsLoading(false);
     }
   };
@@ -102,7 +109,6 @@ const ManagedCriteria = (props: Props) => {
         if (!value) {
           return;
         }
-        console.log('init value is ', value);
         if (value.behaviors) {
           setBehaviours(value.behaviors);
         }
@@ -123,6 +129,7 @@ const ManagedCriteria = (props: Props) => {
         onChange={handleChangeBehaviors}
         infoMessage={behaviorsInfoMessage}
         infoLoading={behaviorsIsLoading}
+        error={error}
         className={classes.behaviours}
       />
 
@@ -134,6 +141,7 @@ const ManagedCriteria = (props: Props) => {
         onChange={handleChangeTags}
         infoMessage={tagsInfoMessage}
         infoLoading={tagsIsLoading}
+        error={error}
         className={classes.tags}
       />
     </div>

@@ -4,6 +4,7 @@ import CoverageReport from '../CoverageReport/CoverageReport';
 import useInterval from 'react-useinterval';
 import { fetchMissionData } from '../../services/fetchMissionData';
 import { useSdkContext } from '../SdkContext';
+import { withRetry } from '../../utils/withRetry';
 
 const styles = (theme: Theme) => ({});
 
@@ -14,6 +15,8 @@ interface Props extends WithStyles<typeof styles> {
 
 const ManagedCoverageReport = (props: Props) => {
   const sdk = useSdkContext();
+  const errorMessage =
+    'Sorry we are unable to calculate relevancy scores due to a problem retrieving the necessary data.';
 
   const [criteria, setCriteria] = useState<{
     missions: string[];
@@ -22,10 +25,10 @@ const ManagedCoverageReport = (props: Props) => {
     missions: [],
     tags: [],
   });
-  const [error, setError] = useState();
   const [value, setValue] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [suggestedTarget, setSuggestedTarget] = useState<any>(null);
+  const [error, setError] = useState();
 
   const fetchContent = async () => {
     if (!sdk) {
@@ -53,6 +56,8 @@ const ManagedCoverageReport = (props: Props) => {
         });
       }
     } catch (err) {
+      console.log('Unable to fetch content', err);
+      err.message = errorMessage;
       setError(err);
     }
   };
@@ -60,8 +65,10 @@ const ManagedCoverageReport = (props: Props) => {
   const fetchCoverageReport = async () => {
     try {
       setIsLoading(true);
-      const data = await fetchMissionData(sdk?.params.installation.apiUrl, criteria.missions, criteria.tags);
-
+      const data = await withRetry(
+        () => fetchMissionData(sdk?.params.installation.apiUrl, criteria.missions, criteria.tags),
+        'personify'
+      );
       const { coverage, suggested_target, missions } = data;
 
       if (coverage) {
@@ -89,6 +96,8 @@ const ManagedCoverageReport = (props: Props) => {
         }
       }
     } catch (err) {
+      console.log('Unable to fetch coverage', err);
+      err.message = errorMessage;
       setError(err);
     } finally {
       setIsLoading(false);

@@ -1,5 +1,4 @@
 import React from 'react';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { Theme, Typography, withStyles, WithStyles } from '@material-ui/core';
 
 const styles = (theme: Theme) => ({
@@ -9,7 +8,7 @@ const styles = (theme: Theme) => ({
     fontWeight: 600,
     color: '#333',
   },
-  outlineIcon: {
+  icon: {
     width: '35px',
     height: '35px',
     marginRight: 10,
@@ -22,19 +21,20 @@ const styles = (theme: Theme) => ({
 interface Props extends WithStyles<typeof styles> {
   className?: string;
   style?: React.CSSProperties;
-  hidden?: boolean;
+  icon: React.ComponentType<any>;
+  text?: string;
   children?: React.ReactNode;
 }
 
-const ErrorMessage = (props: Props) => {
-  const { classes, children } = props;
+const Message = (props: Props) => {
+  const { classes, text, icon: Icon, children } = props;
 
   return (
     <Typography variant="body2" component="div" className={classes.root}>
-      <ErrorOutlineIcon className={classes.outlineIcon}></ErrorOutlineIcon>
-      <div className={classes.content}>{children}</div>
+      <Icon className={classes.icon}></Icon>
+      <div className={classes.content}>{text ?? children}</div>
     </Typography>
   );
 };
 
-export default withStyles(styles)(ErrorMessage);
+export default withStyles(styles)(Message);

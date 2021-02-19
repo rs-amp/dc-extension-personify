@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { withStyles, WithStyles, Theme, Typography, Chip } from '@material-ui/core';
+import { toPercentage } from '../../utils/toPercentage';
 
 const styles = (theme: Theme) => ({
   root: {
@@ -42,15 +43,13 @@ const CoverageReportSummary = (props: Props) => {
     return Array.from(set);
   }, [tags, missions]);
 
-  const percentage = (value * 100).toFixed(2);
-
   return (
     <div className={classes.root}>
       <Typography variant="h4" className={classes.percentage}>
-        {percentage}%
+        {toPercentage(value)}%
       </Typography>
       <Typography variant="subtitle1" className={classes.relevancy}>
-        The currently targeted content will be relevant to {percentage}% of your visitors
+        The currently targeted content will be relevant to {toPercentage(value)}% of your visitors
       </Typography>
       <div className={classes.chips}>
         {uniqueTags.map((tag) => {
