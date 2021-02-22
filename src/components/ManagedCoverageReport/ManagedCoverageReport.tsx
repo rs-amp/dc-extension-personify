@@ -5,6 +5,7 @@ import useInterval from 'react-useinterval';
 import { fetchMissionData } from '../../services/fetchMissionData';
 import { useSdkContext } from '../SdkContext';
 import { withRetry } from '../../utils/withRetry';
+import { Criteria } from '../ManagedCriteria';
 
 const styles = (theme: Theme) => ({});
 
@@ -16,12 +17,9 @@ interface Props extends WithStyles<typeof styles> {
 const ManagedCoverageReport = (props: Props) => {
   const sdk = useSdkContext();
   const errorMessage =
-    'Sorry we are unable to calculate relevancy scores due to a problem retrieving the necessary data.';
+    'Sorry, we are unable to calculate relevancy scores due to a problem retrieving the necessary data.';
 
-  const [criteria, setCriteria] = useState<{
-    missions: string[];
-    tags: string[];
-  }>({
+  const [criteria, setCriteria] = useState<Criteria>({
     missions: [],
     tags: [],
   });
@@ -56,7 +54,7 @@ const ManagedCoverageReport = (props: Props) => {
         });
       }
     } catch (err) {
-      console.log('Unable to fetch content', err);
+      console.debug('Unable to fetch content', err);
       err.message = errorMessage;
       setError(err);
     }
@@ -66,8 +64,8 @@ const ManagedCoverageReport = (props: Props) => {
     try {
       setIsLoading(true);
       const data = await withRetry(
-        () => fetchMissionData(sdk?.params.installation.apiUrl, criteria.missions, criteria.tags),
-        'personify'
+        () => fetchMissionData(sdk?.params.installation.apiUrl, criteria),
+        'personify coverage'
       );
       const { coverage, suggested_target, missions } = data;
 
@@ -96,7 +94,7 @@ const ManagedCoverageReport = (props: Props) => {
         }
       }
     } catch (err) {
-      console.log('Unable to fetch coverage', err);
+      console.debug('Unable to fetch coverage', err);
       err.message = errorMessage;
       setError(err);
     } finally {

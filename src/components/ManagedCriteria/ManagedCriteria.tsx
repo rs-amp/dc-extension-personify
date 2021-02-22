@@ -6,6 +6,11 @@ import { fetchMissionData } from '../../services/fetchMissionData';
 import { withRetry } from '../../utils/withRetry';
 import { toPercentage } from '../../utils/toPercentage';
 
+export interface Criteria {
+  tags: string[];
+  missions: string[];
+}
+
 const styles = (theme: Theme) => ({
   root: {},
   behaviours: {},
@@ -36,34 +41,42 @@ const ManagedCriteria = (props: Props) => {
   const [error, setError] = useState<Error>();
   const apiUrl = sdk?.params.installation.apiUrl;
 
+  const handleError = (err: Error) => {
+    console.debug('Unable to retrieve data', err);
+    err.message = 'We are unable to retrieve data.';
+    setError(err);
+  };
+
   const fetchOptions = async () => {
     try {
-      const missionData = await withRetry(() => fetchMissionData(apiUrl, [], []), 'personify');
+      const missionData = await withRetry(() => fetchMissionData(apiUrl, { missions: behaviours, tags }), 'personify');
       setAllBehaviours(missionData.missions.map((mission: any) => mission.mission_name));
       setAllTags(missionData.tags);
     } catch (err) {
-      console.log('Unable to retrieve data', err);
-      err.message = 'We are unable to retrieve data.';
-      setError(err);
+      handleError(err);
     }
   };
 
   const fetchBehavioursCoverage = async () => {
-    let input = behaviours;
-    setBehaviorsIsLoading(true);
-    const data = await withRetry(() => fetchMissionData(apiUrl, input, []), 'personify');
-    if (input === behaviours) {
+    try {
+      setBehaviorsIsLoading(true);
+      const data = await withRetry(() => fetchMissionData(apiUrl, { missions: behaviours, tags: [] }), 'personify');
       setBehaviorsInfoMessage(`Selected behaviours target ${toPercentage(data.coverage)}% of average website traffic`);
+    } catch (err) {
+      handleError(err);
+    } finally {
       setBehaviorsIsLoading(false);
     }
   };
 
   const fetchTagsCoverage = async () => {
-    let input = tags;
-    setTagsIsLoading(true);
-    const data = await withRetry(() => fetchMissionData(apiUrl, [], input), 'personify');
-    if (input === tags) {
+    try {
+      setTagsIsLoading(true);
+      const data = await withRetry(() => fetchMissionData(apiUrl, { tags, missions: [] }), 'personify');
       setTagsInfoMessage(`Selected tags target ${toPercentage(data.coverage)}% of average website traffic`);
+    } catch (err) {
+      handleError(err);
+    } finally {
       setTagsIsLoading(false);
     }
   };

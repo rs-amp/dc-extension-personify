@@ -7,7 +7,7 @@ export async function withRetry<T>(promiseFn: () => Promise<T>, label: string = 
   for (let i = 0; i < attempts; i++) {
     try {
       const result = await promiseFn();
-      console.log(`Attempt ${i}: ${label}`);
+      console.debug(`Attempt ${i}: ${label}`);
       return result;
     } catch (err) {
       if (!isRetryable(err)) {

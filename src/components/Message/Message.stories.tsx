@@ -1,4 +1,3 @@
-import { ErrorOutline } from '@material-ui/icons';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 import { MessageInfo, MessageError } from '..';
