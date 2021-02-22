@@ -34,7 +34,7 @@ const ManagedCoverageReport = (props: Props) => {
     }
 
     try {
-      const { groups = [] } = await sdk.form.getValue();
+      const { groups = [] } = (await sdk.form.getValue()) ?? {};
       let foundMissions: string[] = [];
       let foundTags: string[] = [];
 
