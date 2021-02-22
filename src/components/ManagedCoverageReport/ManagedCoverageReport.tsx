@@ -69,7 +69,7 @@ const ManagedCoverageReport = (props: Props) => {
       );
       const { coverage, suggested_target, missions } = data;
 
-      if (coverage) {
+      if (isDefined(coverage)) {
         setValue(coverage);
       }
 
