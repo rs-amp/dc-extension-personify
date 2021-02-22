@@ -17,10 +17,7 @@
       "type": "string",
       "const": "ignore",
       "ui:extension": {
-        "url": "https://path-to.extension",
-        "params": {
-          "type": "coverage"
-        }
+        "name": "extension-name"
       }
     },
     "groups": {
@@ -43,9 +40,7 @@
                 {
                   "properties": {
                     "contentType": {
-                      "enum": [
-                        "https://personify.extensions.content.amplience.net/hero-banner.json"
-                      ]
+                      "enum": ["https://personify.extensions.content.amplience.net/hero-banner.json"]
                     }
                   }
                 }
@@ -61,10 +56,7 @@
     "personifyXPCriteria": {
       "type": "object",
       "ui:extension": {
-        "url": "https://path-to.extension",
-        "params": {
-          "type": "criteria"
-        }
+        "name": "extension-name"
       },
       "properties": {
         "behaviors": {
