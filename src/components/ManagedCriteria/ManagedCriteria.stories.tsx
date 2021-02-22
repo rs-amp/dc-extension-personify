@@ -40,6 +40,9 @@ storiesOf('ManagedCriteria', module)
         },
         setValue: () => {},
       },
+      params: {
+        installation: {},
+      },
     } as any;
 
     return (

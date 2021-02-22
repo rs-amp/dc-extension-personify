@@ -28,13 +28,22 @@ const ManagedCoverageReport = (props: Props) => {
   const [suggestedTarget, setSuggestedTarget] = useState<any>(null);
   const [error, setError] = useState();
 
+  const getFormValue = async (): Promise<any> => {
+    let value = {};
+    try {
+      return await sdk.form.getValue();
+    } catch (error) {
+      return value;
+    }
+  };
+
   const fetchContent = async () => {
     if (!sdk) {
       return;
     }
 
     try {
-      const { groups = [] } = (await sdk.form.getValue()) ?? {};
+      const { groups = [] } = await getFormValue();
       let foundMissions: string[] = [];
       let foundTags: string[] = [];
 
