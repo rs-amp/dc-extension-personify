@@ -9,9 +9,10 @@ const styles = (theme: Theme) => ({
     color: '#333',
   },
   icon: {
-    width: '35px',
-    height: '35px',
+    width: '24px',
+    height: '24px',
     marginRight: 10,
+    alignSelf: 'center',
   },
   content: {
     alignSelf: 'center',
@@ -28,12 +29,17 @@ interface Props extends WithStyles<typeof styles> {
 
 const Message = (props: Props) => {
   const { classes, text, icon: Icon, children } = props;
+  const content = text ?? children;
 
   return (
-    <Typography variant="body2" component="div" className={classes.root}>
-      <Icon className={classes.icon}></Icon>
-      <div className={classes.content}>{text ?? children}</div>
-    </Typography>
+    <>
+      {content && (
+        <Typography variant="body2" component="div" className={classes.root}>
+          <Icon className={classes.icon}></Icon>
+          <div className={classes.content}>{text ?? children}</div>
+        </Typography>
+      )}
+    </>
   );
 };
 

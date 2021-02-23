@@ -10,7 +10,7 @@ const styles = (theme: Theme) => ({
     paddingLeft: 10,
     padingRight: 25,
     paddingBottom: 10,
-    borderRadius: '0px',
+    borderRadius: 0,
   },
   title: {
     marginBottom: 10,
@@ -51,7 +51,7 @@ const CoverageReport = (props: Props) => {
         Content relevance
       </Typography>
       <If condition={!error && !loading}>
-        <CoverageReportSummary tags={tags} missions={missions} />
+        <CoverageReportSummary tags={tags} missions={missions} value={value} />
         <CoverageReportRecommendations suggestedTarget={suggestedTarget} />
       </If>
       <If condition={!error}>
