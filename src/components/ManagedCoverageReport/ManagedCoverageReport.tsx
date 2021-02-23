@@ -6,6 +6,7 @@ import { fetchMissionData } from '../../services/fetchMissionData';
 import { useSdkContext } from '../SdkContext';
 import { withRetry } from '../../utils/withRetry';
 import { Criteria } from '../ManagedCriteria';
+import { isDefined } from '../../utils/isDefined';
 
 const styles = (theme: Theme) => ({});
 
@@ -28,17 +29,26 @@ const ManagedCoverageReport = (props: Props) => {
   const [suggestedTarget, setSuggestedTarget] = useState<any>(null);
   const [error, setError] = useState();
 
+  const getFormValue = async (): Promise<any> => {
+    let value = {};
+    try {
+      return await sdk.form.getValue();
+    } catch (error) {
+      return value;
+    }
+  };
+
   const fetchContent = async () => {
     if (!sdk) {
       return;
     }
 
     try {
-      const body = await sdk.form.getValue();
+      const { groups = [] } = await getFormValue();
       let foundMissions: string[] = [];
       let foundTags: string[] = [];
 
-      for (let group of body.groups) {
+      for (let group of groups) {
         const { behaviors = [], tags = [] } = group.criteria || {};
         foundMissions = [...foundMissions, ...(behaviors || [])];
         foundTags = [...foundTags, ...(tags || [])];
@@ -69,7 +79,7 @@ const ManagedCoverageReport = (props: Props) => {
       );
       const { coverage, suggested_target, missions } = data;
 
-      if (coverage) {
+      if (isDefined(coverage)) {
         setValue(coverage);
       }
 

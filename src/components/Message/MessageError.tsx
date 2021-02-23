@@ -6,7 +6,7 @@ import Message from './Message';
 const styles = (theme: Theme) => ({
   root: {},
   icon: {
-    width: '24x',
+    width: '24px',
     height: '24px',
     marginRight: 10,
   },
