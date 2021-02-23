@@ -39,7 +39,7 @@ const ManagedCriteria = (props: Props) => {
   const [tagsIsLoading, setTagsIsLoading] = useState(false);
   const [tagsInfoMessage, setTagsInfoMessage] = useState('');
   const [error, setError] = useState<Error>();
-  const apiUrl = sdk?.params.installation.apiUrl;
+  const apiUrl = sdk?.params.instance.apiUrl;
 
   const handleError = (err: Error) => {
     console.debug('Unable to retrieve data', err);

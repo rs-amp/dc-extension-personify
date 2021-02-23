@@ -1,19 +1,19 @@
 import { ContentFieldExtension } from 'dc-extensions-sdk';
 import React from 'react';
 
-interface Parameters {
-  instance: {
-    type: string | undefined;
-  };
-  installation: {
-    apiUrl: string;
-  };
+interface SharedParameters {
+  type: string | undefined;
+  apiUrl: string;
+}
+interface ContentFieldExtensionParameters {
+  instance: SharedParameters;
+  installation: SharedParameters;
 }
 
-export type Sdk = ContentFieldExtension<any, Parameters>;
+export type Sdk = ContentFieldExtension<any, ContentFieldExtensionParameters>;
 
 interface SdkContextProps {
-  sdk: ContentFieldExtension<any, Parameters>;
+  sdk: ContentFieldExtension<any, ContentFieldExtensionParameters>;
   children?: React.ReactNode;
 }
 
@@ -22,5 +22,6 @@ export function useSdkContext(): Sdk {
   return React.useContext(SdkContext) as Sdk;
 }
 export default function WithSdkContext({ sdk, children }: SdkContextProps) {
+  sdk.params.instance = { ...sdk.params.installation, ...sdk.params.instance };
   return <SdkContext.Provider value={sdk}>{children}</SdkContext.Provider>;
 }

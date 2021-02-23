@@ -73,10 +73,7 @@ const ManagedCoverageReport = (props: Props) => {
   const fetchCoverageReport = async () => {
     try {
       setIsLoading(true);
-      const data = await withRetry(
-        () => fetchMissionData(sdk?.params.installation.apiUrl, criteria),
-        'personify coverage'
-      );
+      const data = await withRetry(() => fetchMissionData(sdk?.params.instance.apiUrl, criteria), 'personify coverage');
       const { coverage, suggested_target, missions } = data;
 
       if (isDefined(coverage)) {

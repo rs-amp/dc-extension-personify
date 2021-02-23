@@ -385,7 +385,7 @@ storiesOf('ManagedCoverageReport', module)
     const sdk = {
       form: {
         getValue: async () => {
-          return;
+          throw new Error('No form model');
         },
       },
       params: {
