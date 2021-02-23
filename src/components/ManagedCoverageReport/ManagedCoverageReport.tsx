@@ -6,6 +6,7 @@ import { fetchMissionData } from '../../services/fetchMissionData';
 import { useSdkContext } from '../SdkContext';
 import { withRetry } from '../../utils/withRetry';
 import { Criteria } from '../ManagedCriteria';
+import { isDefined } from '../../utils/isDefined';
 
 const styles = (theme: Theme) => ({});
 
@@ -78,7 +79,7 @@ const ManagedCoverageReport = (props: Props) => {
       );
       const { coverage, suggested_target, missions } = data;
 
-      if (coverage) {
+      if (isDefined(coverage)) {
         setValue(coverage);
       }
 
