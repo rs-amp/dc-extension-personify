@@ -77,7 +77,13 @@ const CriteriaField: React.FC<Props> = (props) => {
       <Typography variant="caption">{description}</Typography>
 
       <div>
-        <ChipSelector className={classes.chips} options={options} selected={selected} onChange={onChange} />
+        <ChipSelector
+          className={classes.chips}
+          options={options}
+          selected={selected}
+          disabled={Boolean(error)}
+          onChange={onChange}
+        />
       </div>
       <div className={classes.info}>
         {error ? <MessageError text={error.message} /> : <MessageInfo text={infoMessage} />}
