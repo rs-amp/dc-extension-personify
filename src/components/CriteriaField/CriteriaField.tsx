@@ -3,6 +3,7 @@ import { withStyles, WithStyles, Theme, Typography, LinearProgress } from '@mate
 import ChipSelector from '../ChipSelector/ChipSelector';
 import clsx from 'clsx';
 import { MessageError, MessageInfo } from '..';
+import If from '../If';
 
 const styles = (theme: Theme) => ({
   root: {},
@@ -20,6 +21,8 @@ const styles = (theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row' as 'row',
     alignItems: 'center',
+    minHeight: '24px',
+    visibility: 'hidden' as 'hidden',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -36,6 +39,9 @@ const styles = (theme: Theme) => ({
     width: '100%',
     height: 4,
     marginTop: -4,
+  },
+  visible: {
+    visibility: 'visible' as 'visible',
   },
 });
 
@@ -76,16 +82,18 @@ const CriteriaField: React.FC<Props> = (props) => {
       </Typography>
       <Typography variant="caption">{description}</Typography>
 
-      <div>
-        <ChipSelector
-          className={classes.chips}
-          options={options}
-          selected={selected}
-          disabled={Boolean(error)}
-          onChange={onChange}
-        />
-      </div>
-      <div className={classes.info}>
+      <ChipSelector
+        className={classes.chips}
+        options={options}
+        selected={selected}
+        disabled={Boolean(error)}
+        onChange={onChange}
+      />
+      <div
+        className={clsx(classes.info, {
+          [classes.visible]: !infoLoading,
+        })}
+      >
         {error ? <MessageError text={error.message} /> : <MessageInfo text={infoMessage} />}
       </div>
       {infoLoading && <LinearProgress color="primary" className={classes.progress} />}
