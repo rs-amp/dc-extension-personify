@@ -17,7 +17,7 @@
       "type": "string",
       "const": "ignore",
       "ui:extension": {
-        "name": "extension-name",
+        "name": "personify-extension",
         "params": {
           "type": "coverage"
         }
@@ -59,7 +59,7 @@
     "personifyXPCriteria": {
       "type": "object",
       "ui:extension": {
-        "name": "extension-name",
+        "name": "personify-extension",
         "params": {
           "type": "criteria"
         }
