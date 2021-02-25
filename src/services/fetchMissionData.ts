@@ -1,5 +1,5 @@
 import { Criteria } from '../components/ManagedCriteria';
-import ResponseError from '../models/HttpError';
+import ResponseError from '../models/ResponseError';
 import { stripTrailingSlash } from '../utils/stripTrailingSlash';
 
 export async function fetchMissionData(apiUrl: string | undefined, { tags = [], missions = [] }: Criteria) {

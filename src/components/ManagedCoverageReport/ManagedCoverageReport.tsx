@@ -7,6 +7,7 @@ import { useSdkContext } from '../SdkContext';
 import { withRetry } from '../../utils/withRetry';
 import { Criteria } from '../ManagedCriteria';
 import { isDefined } from '../../utils/isDefined';
+import useDidMountEffect from '../../hooks/useDidMountEffect';
 
 const styles = (theme: Theme) => ({});
 
@@ -109,7 +110,7 @@ const ManagedCoverageReport = (props: Props) => {
     }
   };
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     fetchCoverageReport();
   }, [criteria]);
 
