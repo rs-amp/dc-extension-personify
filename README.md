@@ -4,26 +4,25 @@
 
 ![In Action](media/screenshot.png)
 
-This UI extension integrates with Personify's API and can be configured to allow content to be categorized by behaviors and tags or to display a content relevance score. Sample schemas and content types are available in the `sample-content` directory to help get you started.
+This UI extension integrates with [Personify XP](https://personifyxp.com/)'s API and can be configured to allow content to be categorized by behaviors or tags and to display a content relevance score. Sample schemas and content types are available in the `sample-content` directory to help get you started.
 
 ## Key features:
 
-- Classify content with Personify behaviors and tags.
+- Classify content with Personify XP behaviors or tags.
 - View an overall 'Content relevance' score to see what percentage of your website's audience the content is relevant to.
 - View suggestions on how to make content relevant to a wider section of your audience.
 - View relevance scores for selected behaviors and tags.
 
 ## Parameters in schema
 
+Used in the params object of your schema properties when adding the extension to your schema. 
+
 ```json
 {
-  "apiUrl": "{https://service.url}",
   "type": "{coverage|criteria}"
 }
 ```
-
-- `apiUrl`: The Personify service URL.
-- `type`: Set to `coverage` to display coverage report or `criteria` to allow tag and behavior selection.
+- `type`: Set to `coverage` to display 'Content relevance' scores or `criteria` to allow tag and behavior selection.
 
 ## How to install
 
@@ -33,11 +32,13 @@ This extension needs to be [registered](https://amplience.com/docs/development/r
 
 ![Settings](media/settings.png)
 
+#### Settings
+
 - `Category:` Content Field.
-- `Label:` Personify extension _(this will appear under the 'add extension' dropdown in the schema editor)_.
+- `Label:` Personify XP extension _(this will appear under the 'add extension' dropdown in the schema editor)_.
 - `Name`: personify-extension _(needs to be unique within the Hub)_.
 - `URL`: [https://dc-extension-personify.extensions.content.amplience.net](https://dc-extension-personify.extensions.content.amplience.net) (TBC).
-- `Description`: Personify extension _(can be left blank if you wish)_.
+- `Description`: Personify XP extension _(can be left blank if you wish)_.
 - `Initial height`: 200.
 
 **Note:** You can use our deployed version of this extension (builds from the 'main' branch) -
@@ -46,9 +47,19 @@ This extension needs to be [registered](https://amplience.com/docs/development/r
 
 _As this is an open source project you're welcome to host your own fork of the project. You can use any standard static hosting service (Netlify, Amplify, Vercel, etc.) if you wish._
 
-Add your schema parameters (see the 'Parameters in schema' section) in the `Istallation parameters` section of the extension registration screen.
+#### Installation parameters
 
-### Creating schemas and registering content types
+The following installation parameter must be added in the `Installation parameters` section of the extension registration screen:
+
+```json
+{
+  "apiUrl": "{https://service.url}",
+}
+```
+
+- `apiUrl`: The Personify XP service URL, provided to you by Personify XP support.
+
+### Create schemas and register content types
 
 **Import using our dc-cli tool (recommended)**
 
