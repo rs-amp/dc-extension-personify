@@ -60,7 +60,10 @@
     "lint": "eslint 'src/**/*/**/*.{ts,tsx}' && prettier 'src/**/*.{ts,tsx}'",
     "lint:fix": "eslint 'src/**/*/**/*.{ts,tsx}' --fix  && prettier 'src/**/*.{ts,tsx}' --write",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "sync": "npm run import-content-type-schemas  && npm run import-content-types",
+    "import-content-type-schemas": "dc-cli content-type-schema import ./sample-content/schemas",
+    "import-content-types": "dc-cli content-type import --sync ./sample-content/content-types"
   },
   "eslintConfig": {
     "extends": [

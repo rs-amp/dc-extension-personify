@@ -23,9 +23,11 @@ storiesOf('ManagedCriteria', module)
       },
     } as any;
 
+    const types = ['tags'];
+
     return (
       <SdkContext sdk={sdk}>
-        <ManagedCriteria />
+        <ManagedCriteria types={types} />
       </SdkContext>
     );
   })
@@ -45,9 +47,11 @@ storiesOf('ManagedCriteria', module)
       },
     } as any;
 
+    const types = ['tags'];
+
     return (
       <SdkContext sdk={sdk}>
-        <ManagedCriteria />
+        <ManagedCriteria types={types} />
       </SdkContext>
     );
   });
