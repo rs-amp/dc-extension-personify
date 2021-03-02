@@ -31,8 +31,8 @@ interface Props extends WithStyles<typeof styles> {
   style?: React.CSSProperties;
 
   value?: number;
-  missions?: string[];
-  tags?: string[];
+  missions?: string[] | null;
+  tags?: string[] | null;
 }
 
 const CoverageReportSummary = (props: Props) => {

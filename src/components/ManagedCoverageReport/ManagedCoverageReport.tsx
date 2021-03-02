@@ -22,8 +22,8 @@ const ManagedCoverageReport = (props: Props) => {
     'Sorry, we are unable to calculate relevancy scores due to a problem retrieving the necessary data.';
 
   const [criteria, setCriteria] = useState<Criteria>({
-    missions: [],
-    tags: [],
+    missions: null,
+    tags: null,
   });
   const [value, setValue] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -58,7 +58,10 @@ const ManagedCoverageReport = (props: Props) => {
       foundMissions = Array.from(new Set(foundMissions));
       foundTags = Array.from(new Set(foundTags));
 
-      if (foundMissions.join(',') !== criteria.missions.join(',') || foundTags.join(',') !== criteria.tags.join(',')) {
+      if (
+        foundMissions.join(',') !== criteria.missions?.join(',') ||
+        foundTags.join(',') !== criteria.tags?.join(',')
+      ) {
         setCriteria({
           missions: foundMissions,
           tags: foundTags,

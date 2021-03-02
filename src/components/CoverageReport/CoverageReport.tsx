@@ -32,8 +32,8 @@ interface Props extends WithStyles<typeof styles> {
   value?: number;
   loading?: boolean;
   error?: Error;
-  missions?: string[];
-  tags?: string[];
+  missions?: string[] | null;
+  tags?: string[] | null;
 
   suggestedTarget?: {
     target: string;
