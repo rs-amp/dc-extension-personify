@@ -7,8 +7,8 @@ import { withRetry } from '../../utils/withRetry';
 import { toPercentage } from '../../utils/toPercentage';
 
 export interface Criteria {
-  tags: string[];
-  missions: string[];
+  tags: string[] | null;
+  missions: string[] | null;
 }
 
 const styles = (theme: Theme) => ({
