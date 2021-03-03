@@ -48,6 +48,13 @@ export default class App extends React.Component<{}, AppState> {
     }
   }
 
+  public getWidget(type: string | Array<string> = 'tags'): React.ReactElement {
+    const types = Array.of(type).flat();
+    const isCoverage = types.includes('coverage');
+
+    return isCoverage ? <ManagedCoverageReport /> : <ManagedCriteria types={types} />;
+  }
+
   public render(): React.ReactElement {
     return (
       <div className="App">
@@ -55,9 +62,7 @@ export default class App extends React.Component<{}, AppState> {
           <div>
             {this.state.sdk ? (
               <SdkContext sdk={this.state.sdk}>
-                <WithTheme>
-                  {this.state.sdk.params.instance.type === 'criteria' ? <ManagedCriteria /> : <ManagedCoverageReport />}
-                </WithTheme>
+                <WithTheme>{this.getWidget(this.state.sdk.params.instance.type)}</WithTheme>
               </SdkContext>
             ) : null}
           </div>

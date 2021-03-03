@@ -22,10 +22,11 @@ const styles = (theme: Theme) => ({
 interface Props extends WithStyles<typeof styles> {
   className?: string;
   style?: React.CSSProperties;
+  types: Array<string>;
 }
 
 const ManagedCriteria = (props: Props) => {
-  const { classes } = props;
+  const { classes, types } = props;
 
   const sdk = useSdkContext();
 
@@ -134,29 +135,32 @@ const ManagedCriteria = (props: Props) => {
 
   return (
     <div className={classes.root}>
-      <CriteriaField
-        label="Behaviours"
-        description=""
-        options={allBehaviours}
-        selected={behaviours}
-        onChange={handleChangeBehaviors}
-        infoMessage={behaviorsInfoMessage}
-        infoLoading={behaviorsIsLoading}
-        error={error}
-        className={classes.behaviours}
-      />
-
-      <CriteriaField
-        label="Tags"
-        description=""
-        options={allTags}
-        selected={tags}
-        onChange={handleChangeTags}
-        infoMessage={tagsInfoMessage}
-        infoLoading={tagsIsLoading}
-        error={error}
-        className={classes.tags}
-      />
+      {types.includes('behaviors') ? (
+        <CriteriaField
+          label="Behaviors"
+          description=""
+          options={allBehaviours}
+          selected={behaviours}
+          onChange={handleChangeBehaviors}
+          infoMessage={behaviorsInfoMessage}
+          infoLoading={behaviorsIsLoading}
+          error={error}
+          className={classes.behaviours}
+        />
+      ) : null}
+      {types.includes('tags') ? (
+        <CriteriaField
+          label="Tags"
+          description=""
+          options={allTags}
+          selected={tags}
+          onChange={handleChangeTags}
+          infoMessage={tagsInfoMessage}
+          infoLoading={tagsIsLoading}
+          error={error}
+          className={classes.tags}
+        />
+      ) : null}
     </div>
   );
 };
