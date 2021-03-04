@@ -13,6 +13,7 @@ interface AppState {
   openDialogCallback?: (value: any) => void;
 }
 
+const Types: string[] = ['coverage', 'tags', 'behaviors'];
 export default class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
@@ -49,9 +50,14 @@ export default class App extends React.Component<{}, AppState> {
   }
 
   public getWidget(type: string | Array<string> = 'tags'): React.ReactElement {
-    const types = Array.of(type).flat();
-    const isCoverage = types.includes('coverage');
+    const types = Array.of(type)
+      .flat()
+      .filter((item) => Types.includes(item));
 
+    if (!types.length) {
+      types.push('tags');
+    }
+    const isCoverage = types.includes('coverage');
     return isCoverage ? <ManagedCoverageReport /> : <ManagedCriteria types={types} />;
   }
 
