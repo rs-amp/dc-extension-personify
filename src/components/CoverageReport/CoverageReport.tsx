@@ -8,12 +8,15 @@ import CoverageReportSummary from './CoverageReportSummary';
 const styles = (theme: Theme) => ({
   root: {
     paddingLeft: 10,
-    padingRight: 25,
     paddingBottom: 10,
     borderRadius: 0,
   },
   title: {
     marginBottom: 10,
+  },
+  unsavedMessage: {
+    marginTop: 10,
+    color: '#039be5',
   },
   progressBar: {
     marginTop: 10,
@@ -31,6 +34,7 @@ interface Props extends WithStyles<typeof styles> {
 
   value?: number;
   loading?: boolean;
+  unsaved?: boolean;
   error?: Error;
   missions?: string[] | null;
   tags?: string[] | null;
@@ -43,7 +47,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const CoverageReport = (props: Props) => {
-  const { classes, value = 0, loading = false, error, tags, missions, suggestedTarget } = props;
+  const { classes, value = 0, loading = false, unsaved = false, error, tags, missions, suggestedTarget } = props;
 
   return (
     <Paper elevation={0} className={classes.root}>
@@ -58,6 +62,11 @@ const CoverageReport = (props: Props) => {
         <div className={classes.progressBar}>
           <ProgressBar loading={loading} value={value} />
         </div>
+        {unsaved && (
+          <Typography variant="body2" component="div" className={classes.unsavedMessage}>
+            Save to see the content relevance
+          </Typography>
+        )}
       </If>
       <If condition={error}>
         <MessageError text={error?.message} classes={{ icon: classes.errorMessageIcon }} />
