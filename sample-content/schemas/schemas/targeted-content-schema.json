@@ -17,7 +17,7 @@
       "type": "string",
       "const": "ignore",
       "ui:extension": {
-        "url": "https://path-to.extension",
+        "name": "personify-extension",
         "params": {
           "type": "coverage"
         }
@@ -59,7 +59,7 @@
     "personifyXPCriteria": {
       "type": "object",
       "ui:extension": {
-        "url": "https://path-to.extension",
+        "name": "personify-extension",
         "params": {
           "type": ["tags", "behaviors"]
         }
