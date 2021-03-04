@@ -46,13 +46,13 @@ This extension needs to be [registered](https://amplience.com/docs/development/r
 - `Category:` Content Field.
 - `Label:` Personify XP extension _(this will appear under the 'add extension' dropdown in the schema editor)_.
 - `Name`: personify-extension _(needs to be unique within the Hub)_.
-- `URL`: [https://dc-extension-personify.extensions.content.amplience.net](https://dc-extension-personify.extensions.content.amplience.net) (TBC).
+- `URL`: [https://personify.extensions.content.amplience.net](https://personify.extensions.content.amplience.net).
 - `Description`: Personify XP extension _(can be left blank if you wish)_.
 - `Initial height`: 200.
 
 **Note:** You can use our deployed version of this extension (builds from the 'main' branch) -
 
-[dc-extension-personify.extensions.content.amplience.net](https://dc-extension-personify.extensions.content.amplience.net) (TBC).
+[personify.extensions.content.amplience.net](https://personify.extensions.content.amplience.net).
 
 _As this is an open source project you're welcome to host your own fork of the project. You can use any standard static hosting service (Netlify, Amplify, Vercel, etc.) if you wish._
 
