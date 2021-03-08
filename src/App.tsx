@@ -3,6 +3,7 @@ import React from 'react';
 import { init } from 'dc-extensions-sdk';
 import { WithTheme, ManagedCoverageReport, ManagedCriteria } from './components';
 import SdkContext, { Sdk } from './components/SdkContext';
+import { Types } from './constants';
 
 interface AppState {
   connected: boolean;
@@ -13,7 +14,6 @@ interface AppState {
   openDialogCallback?: (value: any) => void;
 }
 
-const Types: string[] = ['coverage', 'tags', 'behaviors'];
 export default class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
@@ -50,13 +50,7 @@ export default class App extends React.Component<{}, AppState> {
   }
 
   public getWidget(type: string | Array<string> = 'tags'): React.ReactElement {
-    const types = Array.of(type)
-      .flat()
-      .filter((item) => Types.includes(item));
-
-    if (!types.length) {
-      types.push('tags');
-    }
+    const types = sanitiseTypes(Array.of(type).flat());
     const isCoverage = types.includes('coverage');
     return isCoverage ? <ManagedCoverageReport /> : <ManagedCriteria types={types} />;
   }
@@ -76,4 +70,13 @@ export default class App extends React.Component<{}, AppState> {
       </div>
     );
   }
+}
+
+function sanitiseTypes(types: Array<string>): string[] {
+  const sanitisedTypes = types.filter((type: string) => Types.includes(type));
+
+  if (!sanitisedTypes.length) {
+    sanitisedTypes.push('tags');
+  }
+  return sanitisedTypes;
 }
