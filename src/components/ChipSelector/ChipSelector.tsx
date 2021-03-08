@@ -84,7 +84,7 @@ const ChipSelector = (props: Props) => {
         PaperProps: {
           style: {
             minWidth: 'unset !important',
-            maxHeight: 'calcl(100% - 30px)',
+            maxHeight: 'calc(100% - 30px)',
           },
         },
       }}
