@@ -61,7 +61,7 @@
       "ui:extension": {
         "name": "personify-extension",
         "params": {
-          "type": "criteria"
+          "type": ["tags", "behaviors"]
         }
       },
       "properties": {
