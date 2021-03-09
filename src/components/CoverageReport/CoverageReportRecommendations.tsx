@@ -14,7 +14,7 @@ const styles = (theme: Theme) => ({
     width: 24,
     height: 24,
     fill: '#2DD000',
-    marginRight: 20,
+    marginRight: 10,
   },
 });
 

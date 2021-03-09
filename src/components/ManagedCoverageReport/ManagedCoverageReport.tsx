@@ -26,6 +26,7 @@ const ManagedCoverageReport = (props: Props) => {
     tags: null,
   });
   const [value, setValue] = useState(0);
+  const [unsaved, setUnsaved] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [suggestedTarget, setSuggestedTarget] = useState<any>(null);
   const [error, setError] = useState();
@@ -35,6 +36,7 @@ const ManagedCoverageReport = (props: Props) => {
     try {
       return await sdk.form.getValue();
     } catch (error) {
+      setUnsaved(true);
       return value;
     }
   };
@@ -127,6 +129,7 @@ const ManagedCoverageReport = (props: Props) => {
     <CoverageReport
       value={value}
       loading={isLoading}
+      unsaved={unsaved}
       error={error}
       missions={criteria.missions}
       tags={criteria.tags}
