@@ -4,6 +4,7 @@ export { default as CriteriaField } from './CriteriaField';
 export { default as ManagedCoverageReport } from './ManagedCoverageReport';
 export { default as ManagedCriteria } from './ManagedCriteria';
 export { default as ProgressBar } from './ProgressBar';
+export { MessageError, MessageInfo } from './Message';
 export { default as TrendIcon } from './TrendIcon';
 export { default as SdkContext } from './SdkContext';
 export { default as WithTheme } from './WithTheme';

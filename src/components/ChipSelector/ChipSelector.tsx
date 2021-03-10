@@ -30,6 +30,7 @@ interface Props extends WithStyles<typeof styles> {
   className?: string;
   style?: React.CSSProperties;
 
+  disabled?: boolean;
   selected: string[];
   options: string[];
 
@@ -37,7 +38,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const ChipSelector = (props: Props) => {
-  const { classes, className, options, selected, onChange } = props;
+  const { classes, className, options, selected, disabled, onChange } = props;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -60,6 +61,7 @@ const ChipSelector = (props: Props) => {
 
   return (
     <Select
+      disabled={disabled}
       className={clsx(classes.root, className)}
       multiple
       value={selected}
@@ -82,6 +84,7 @@ const ChipSelector = (props: Props) => {
         PaperProps: {
           style: {
             minWidth: 'unset !important',
+            maxHeight: 'calc(100% - 30px)',
           },
         },
       }}

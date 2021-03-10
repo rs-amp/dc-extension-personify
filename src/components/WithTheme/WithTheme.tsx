@@ -30,6 +30,9 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: "'roboto', sans-serif",
     fontSize: 12,
+    body2: {
+      fontSize: '13px',
+    },
   },
   overrides: {
     MuiInput: {

@@ -1,52 +1,30 @@
-import React, { useMemo } from 'react';
-import { withStyles, WithStyles, Theme, Paper, Typography, Chip } from '@material-ui/core';
-import ProgressBar from '../ProgressBar/ProgressBar';
-import TrendIcon from '../TrendIcon';
+import React from 'react';
+import { withStyles, WithStyles, Theme, Paper, Typography } from '@material-ui/core';
+import { ProgressBar, MessageError } from '../../components';
+import If from '../If';
+import CoverageReportRecommendations from './CoverageReportRecommendations';
+import CoverageReportSummary from './CoverageReportSummary';
 
 const styles = (theme: Theme) => ({
   root: {
     paddingLeft: 10,
-    padingRight: 25,
     paddingBottom: 10,
-    borderRadius: '0px',
+    borderRadius: 0,
   },
-  title: {},
-  summary: {
+  title: {
+    marginBottom: 10,
+  },
+  unsavedMessage: {
     marginTop: 10,
-    display: 'flex',
-    flexDirection: 'row' as 'row',
-    alignItems: 'center',
-  },
-  percentage: {
-    marginRight: 20,
+    color: '#039be5',
   },
   progressBar: {
     marginTop: 10,
     width: '100%',
   },
-  reccomendations: {
-    marginTop: 10,
-    display: 'flex',
-    flexDirection: 'row' as 'row',
-    alignItems: 'center',
-  },
-  relevancy: {
-    lineHeight: 1.5,
-  },
-  chips: {
-    marginLeft: 10,
-  },
-  chip: {
-    marginLeft: 10,
-    marginBottom: 10,
-    backgroundColor: '#e5e5e5',
-    borderRadius: '8px',
-  },
-  icon: {
-    width: 24,
-    height: 24,
-    fill: '#2DD000',
-    marginRight: 20,
+  errorMessageIcon: {
+    height: '35px',
+    width: '35px',
   },
 });
 
@@ -56,8 +34,10 @@ interface Props extends WithStyles<typeof styles> {
 
   value?: number;
   loading?: boolean;
-  missions?: string[];
-  tags?: string[];
+  unsaved?: boolean;
+  error?: Error;
+  missions?: string[] | null;
+  tags?: string[] | null;
 
   suggestedTarget?: {
     target: string;
@@ -67,47 +47,30 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const CoverageReport = (props: Props) => {
-  const { classes, value = 0, loading = false, tags, missions, suggestedTarget } = props;
-
-  const uniqueTags = useMemo(() => {
-    const set = new Set([...(tags || []), ...(missions || [])]);
-    return Array.from(set);
-  }, [tags, missions]);
-
-  const percentage = (value * 100).toFixed(2);
+  const { classes, value = 0, loading = false, unsaved = false, error, tags, missions, suggestedTarget } = props;
 
   return (
     <Paper elevation={0} className={classes.root}>
       <Typography variant="h6" className={classes.title}>
         Content relevance
       </Typography>
-      <div className={classes.summary}>
-        <Typography variant="h4" className={classes.percentage}>
-          {percentage}%
-        </Typography>
-        <Typography variant="subtitle1" className={classes.relevancy}>
-          The currently targeted content will be relevant to {percentage}% of your visitors
-        </Typography>
-        <div className={classes.chips}>
-          {uniqueTags.map((tag) => {
-            return <Chip clickable={false} className={classes.chip} label={tag} key={tag} size="small" />;
-          })}
+      <If condition={!error && !loading}>
+        <CoverageReportSummary tags={tags} missions={missions} value={value} />
+        <CoverageReportRecommendations suggestedTarget={suggestedTarget} />
+      </If>
+      <If condition={!error}>
+        <div className={classes.progressBar}>
+          <ProgressBar loading={loading} value={value} />
         </div>
-      </div>
-      <div className={classes.progressBar}>
-        <ProgressBar loading={loading} value={value} />
-      </div>
-      <div className={classes.reccomendations}>
-        {suggestedTarget ? (
-          <>
-            <TrendIcon className={classes.icon} />
-            <Typography variant="subtitle1">
-              Increase relevance to {(suggestedTarget.coverage * 100).toFixed(2)}% by targeting{' '}
-              {suggestedTarget.type === 'TAG' ? 'tag' : 'behaviour'} "{suggestedTarget.target}"
-            </Typography>
-          </>
-        ) : null}
-      </div>
+        {unsaved && (
+          <Typography variant="body2" component="div" className={classes.unsavedMessage}>
+            Save to see the content relevance
+          </Typography>
+        )}
+      </If>
+      <If condition={error}>
+        <MessageError text={error?.message} classes={{ icon: classes.errorMessageIcon }} />
+      </If>
     </Paper>
   );
 };

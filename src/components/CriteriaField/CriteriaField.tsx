@@ -1,8 +1,9 @@
 import React from 'react';
 import { withStyles, WithStyles, Theme, Typography, LinearProgress } from '@material-ui/core';
 import ChipSelector from '../ChipSelector/ChipSelector';
-import TrendIcon from '../TrendIcon';
 import clsx from 'clsx';
+import { MessageError, MessageInfo } from '..';
+import If from '../If';
 
 const styles = (theme: Theme) => ({
   root: {},
@@ -16,10 +17,12 @@ const styles = (theme: Theme) => ({
   info: {
     marginTop: 10,
     padding: 10,
-
+    backgroundColor: '#F2F1F2',
     display: 'flex',
     flexDirection: 'row' as 'row',
     alignItems: 'center',
+    minHeight: '24px',
+    visibility: 'hidden' as 'hidden',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -37,6 +40,9 @@ const styles = (theme: Theme) => ({
     height: 4,
     marginTop: -4,
   },
+  visible: {
+    visibility: 'visible' as 'visible',
+  },
 });
 
 interface Props extends WithStyles<typeof styles> {
@@ -51,10 +57,23 @@ interface Props extends WithStyles<typeof styles> {
 
   infoMessage?: string;
   infoLoading?: boolean;
+
+  error?: Error;
 }
 
 const CriteriaField: React.FC<Props> = (props) => {
-  const { className, classes, label, description, options, selected, infoMessage, infoLoading, onChange } = props;
+  const {
+    className,
+    classes,
+    label,
+    description,
+    options,
+    selected,
+    infoMessage,
+    infoLoading,
+    error,
+    onChange,
+  } = props;
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -63,12 +82,19 @@ const CriteriaField: React.FC<Props> = (props) => {
       </Typography>
       <Typography variant="caption">{description}</Typography>
 
-      <div>
-        <ChipSelector className={classes.chips} options={options} selected={selected} onChange={onChange} />
-      </div>
-      <div className={classes.info}>
-        <TrendIcon className={classes.icon} />
-        <Typography variant="subtitle1">{infoMessage || ''}</Typography>
+      <ChipSelector
+        className={classes.chips}
+        options={options}
+        selected={selected}
+        disabled={Boolean(error)}
+        onChange={onChange}
+      />
+      <div
+        className={clsx(classes.info, {
+          [classes.visible]: !infoLoading,
+        })}
+      >
+        {error ? <MessageError text={error.message} /> : <MessageInfo text={infoMessage} />}
       </div>
       {infoLoading && <LinearProgress color="primary" className={classes.progress} />}
     </div>

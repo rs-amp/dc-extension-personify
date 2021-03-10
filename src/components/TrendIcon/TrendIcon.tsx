@@ -2,28 +2,11 @@ import React from 'react';
 
 export default function TrendIcon(props: any) {
   return (
-    <svg
-      {...props}
-      version="1.1"
-      id="Layer_1"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      x="0px"
-      y="0px"
-      viewBox="0 0 27.5 27.5"
-      style={{ enableBackground: 'new 0 0 27.5 27.5' } as any}
-      xmlSpace="preserve"
-    >
-      <style type="text/css" dangerouslySetInnerHTML={{ __html: '\n\t.st0{fill-rule:evenodd;clip-rule:evenodd;}\n' }} />
-      <g>
-        <g>
-          <path
-            className="st0"
-            d="M0,0v27.5h27.5V0H0z M15.4,17.2L15.4,17.2L15.4,17.2l-3.4-3.4l-6,6l-1.4-1.4L12,11l0,0l0,0l3.3,3.3l5.9-5.9
-			l1.4,1.4L15.4,17.2z"
-          />
-        </g>
-      </g>
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+      <path
+        d="m20,0c2.20914,0 4,1.79086 4,4l0,16c0,2.20914 -1.79086,4 -4,4l-16,0c-2.20914,0 -4,-1.79086 -4,-4l0,-16c0,-2.20914 1.79086,-4 4,-4l16,0zm2,6l-6,0l2.29,2.29l-4.88,4.88l-4,-4l-7.41,7.42l1.41,1.41l6,-6l4,4l6.3,-6.29l2.29,2.29l0,-6z"
+        id="svg_2"
+      />
     </svg>
   );
 }

@@ -19,11 +19,19 @@ Used in the params object of your schema properties when adding the extension to
 
 ```json
 {
-  "type": "{coverage|criteria}"
+  "type": "{coverage|tags|behaviors}" | ["tags", "behaviors"],
+  "apiUrl: "{Personify API URL}"
 }
 ```
 
-- `type`: Set to `coverage` to display 'Content relevance' scores or `criteria` to allow tag and behavior selection.
+`type`: Can have one of the following values, defaults to `tags`:
+
+- `coverage`: displays the coverage report widget.
+- `tags`: displays the tags widget.
+- `behaviors`: displays the behaviors widget.
+- `['tags', 'behaviors']`: displays both the tags and behaviors widgets.
+
+`apiUrl`: The Personify API URL
 
 ## How to install
 

@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { withStyles, WithStyles, Theme } from '@material-ui/core';
 import CriteriaField from '../CriteriaField/CriteriaField';
 import { useSdkContext } from '../SdkContext';
-import { withRetry } from '../../utils/withRetry';
 import { fetchMissionData } from '../../services/fetchMissionData';
+import { withRetry } from '../../utils/withRetry';
+import { toPercentage } from '../../utils/toPercentage';
+
+export interface Criteria {
+  tags: string[] | null;
+  missions: string[] | null;
+}
 
 const styles = (theme: Theme) => ({
   root: {},
@@ -16,10 +22,11 @@ const styles = (theme: Theme) => ({
 interface Props extends WithStyles<typeof styles> {
   className?: string;
   style?: React.CSSProperties;
+  types: Array<string>;
 }
 
 const ManagedCriteria = (props: Props) => {
-  const { classes } = props;
+  const { classes, types } = props;
 
   const sdk = useSdkContext();
 
@@ -32,32 +39,45 @@ const ManagedCriteria = (props: Props) => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagsIsLoading, setTagsIsLoading] = useState(false);
   const [tagsInfoMessage, setTagsInfoMessage] = useState('');
-  const apiUrl = sdk?.params.installation.apiUrl;
+  const [error, setError] = useState<Error>();
+  const apiUrl = sdk?.params.instance.apiUrl;
+
+  const handleError = (err: Error) => {
+    console.debug('Unable to retrieve data', err);
+    err.message = 'We are unable to retrieve data.';
+    setError(err);
+  };
 
   const fetchOptions = async () => {
-    const missionData = await withRetry(() => fetchMissionData(apiUrl, [], []), 'personify');
-    setAllBehaviours(missionData.missions.map((x: any) => x.mission_name));
-    setAllTags(missionData.tags);
+    try {
+      const missionData = await withRetry(() => fetchMissionData(apiUrl, { missions: behaviours, tags }), 'personify');
+      setAllBehaviours(missionData.missions.map((mission: any) => mission.mission_name));
+      setAllTags(missionData.tags);
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   const fetchBehavioursCoverage = async () => {
-    let input = behaviours;
-    setBehaviorsIsLoading(true);
-    const data = await withRetry(() => fetchMissionData(apiUrl, input, []), 'personify');
-    if (input === behaviours) {
-      setBehaviorsInfoMessage(
-        `Selected behaviours target ${(data.coverage * 100).toFixed(2)}% of average website traffic`
-      );
+    try {
+      setBehaviorsIsLoading(true);
+      const data = await withRetry(() => fetchMissionData(apiUrl, { missions: behaviours, tags: [] }), 'personify');
+      setBehaviorsInfoMessage(`Selected behaviours target ${toPercentage(data.coverage)}% of average website traffic`);
+    } catch (err) {
+      handleError(err);
+    } finally {
       setBehaviorsIsLoading(false);
     }
   };
 
   const fetchTagsCoverage = async () => {
-    let input = tags;
-    setTagsIsLoading(true);
-    const data = await withRetry(() => fetchMissionData(apiUrl, [], input), 'personify');
-    if (input === tags) {
-      setTagsInfoMessage(`Selected tags target ${(data.coverage * 100).toFixed(2)}% of average website traffic`);
+    try {
+      setTagsIsLoading(true);
+      const data = await withRetry(() => fetchMissionData(apiUrl, { tags, missions: [] }), 'personify');
+      setTagsInfoMessage(`Selected tags target ${toPercentage(data.coverage)}% of average website traffic`);
+    } catch (err) {
+      handleError(err);
+    } finally {
       setTagsIsLoading(false);
     }
   };
@@ -103,7 +123,6 @@ const ManagedCriteria = (props: Props) => {
         if (!value) {
           return;
         }
-        console.log('init value is ', value);
         if (value.behaviors) {
           setBehaviours(value.behaviors);
         }
@@ -116,27 +135,32 @@ const ManagedCriteria = (props: Props) => {
 
   return (
     <div className={classes.root}>
-      <CriteriaField
-        label="Behaviours"
-        description=""
-        options={allBehaviours}
-        selected={behaviours}
-        onChange={handleChangeBehaviors}
-        infoMessage={behaviorsInfoMessage}
-        infoLoading={behaviorsIsLoading}
-        className={classes.behaviours}
-      />
-
-      <CriteriaField
-        label="Tags"
-        description=""
-        options={allTags}
-        selected={tags}
-        onChange={handleChangeTags}
-        infoMessage={tagsInfoMessage}
-        infoLoading={tagsIsLoading}
-        className={classes.tags}
-      />
+      {types.includes('behaviors') ? (
+        <CriteriaField
+          label="Behaviors"
+          description=""
+          options={allBehaviours}
+          selected={behaviours}
+          onChange={handleChangeBehaviors}
+          infoMessage={behaviorsInfoMessage}
+          infoLoading={behaviorsIsLoading}
+          error={error}
+          className={classes.behaviours}
+        />
+      ) : null}
+      {types.includes('tags') ? (
+        <CriteriaField
+          label="Tags"
+          description=""
+          options={allTags}
+          selected={tags}
+          onChange={handleChangeTags}
+          infoMessage={tagsInfoMessage}
+          infoLoading={tagsIsLoading}
+          error={error}
+          className={classes.tags}
+        />
+      ) : null}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import React from 'react';
 import { init } from 'dc-extensions-sdk';
 import { WithTheme, ManagedCoverageReport, ManagedCriteria } from './components';
 import SdkContext, { Sdk } from './components/SdkContext';
+import { Types } from './constants';
 
 interface AppState {
   connected: boolean;
@@ -48,23 +49,34 @@ export default class App extends React.Component<{}, AppState> {
     }
   }
 
+  public getWidget(type: string | Array<string> = 'tags'): React.ReactElement {
+    const types = sanitiseTypes(Array.of(type).flat());
+    const isCoverage = types.includes('coverage');
+    return isCoverage ? <ManagedCoverageReport /> : <ManagedCriteria types={types} />;
+  }
+
   public render(): React.ReactElement {
     return (
       <div className="App">
-        {this.state.connected === true ? (
+        {this.state.connected === true && (
           <div>
             {this.state.sdk ? (
               <SdkContext sdk={this.state.sdk}>
-                <WithTheme>
-                  {this.state.sdk.params.instance.type === 'criteria' ? <ManagedCriteria /> : <ManagedCoverageReport />}
-                </WithTheme>
+                <WithTheme>{this.getWidget(this.state.sdk.params.instance.type)}</WithTheme>
               </SdkContext>
             ) : null}
           </div>
-        ) : (
-          <div></div>
         )}
       </div>
     );
   }
+}
+
+function sanitiseTypes(types: Array<string>): string[] {
+  const sanitisedTypes = types.filter((type: string) => Types.includes(type));
+
+  if (!sanitisedTypes.length) {
+    sanitisedTypes.push('tags');
+  }
+  return sanitisedTypes;
 }
